@@ -25,15 +25,22 @@ docker-compose exec -u www-data ec-cube bin/console eccube:install  --no-interac
 
 ```
 
-
+ローカルec    
 http://localhost:8080/
-
+    
+メールシミュレータ    
 http://localhost:1080/
-
+    
+PHP My Admin    
+http://localhost:4040/
+    
 
 
 ```
 2回目以降(キャッシュをクリアしたい時)
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml build
+
+
 docker build . --no-cache
 ```
 
