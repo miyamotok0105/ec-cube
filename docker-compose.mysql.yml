@@ -31,3 +31,20 @@ services:
       interval: 3s
       timeout: 3s
       retries: 3
+      
+  #↓phpmyadminの記述部分【以下の部分を追加した】
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    links:
+      - mysql
+    ports:
+      - 4040:80
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
+    networks:
+      - backend
+  #phpmyadmin部分の追加箇所終了
