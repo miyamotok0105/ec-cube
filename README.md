@@ -1,5 +1,46 @@
 # EC-CUBE 4.1
 
+更新：2022/9/17    
+
+### 動作確認環境
+
+* MacOSで動作    
+* Apache 2.4.x (mod_rewrite / mod_ssl 必須)
+* PHP 7.3.x / 7.4.x
+* PostgreSQL 10.x / MySQL 5.7.x
+* ブラウザー：Google Chrome
+
+
+
+```
+git clone 
+cd hoge
+cp .env.dist .env
+
+docker-compose up -d
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
+
+# docker-compose exec -u www-data ec-cube bin/console eccube:install
+docker-compose exec -u www-data ec-cube bin/console eccube:install  --no-interaction
+
+```
+
+
+http://localhost:8080/
+
+http://localhost:1080/
+
+
+
+```
+2回目以降(キャッシュをクリアしたい時)
+docker build . --no-cache
+```
+
+
+### 以下は元からのドキュメント
+
+
 [![Unit test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/unit-test.yml)
 [![E2E test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/e2e-test.yml)
 [![Plugin test for EC-CUBE](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml/badge.svg?branch=4.1)](https://github.com/EC-CUBE/ec-cube/actions/workflows/plugin-test.yml)
