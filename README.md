@@ -13,17 +13,45 @@
 
 
 ```
-git clone 
-cd hoge
+git clone git@github.com:miyamotok0105/ec-cube.git
+cd ec-cube
+# envファイルをコピー
 cp .env.dist .env
+```
 
-docker-compose up -d
+### ローカルで動かす
+
+
+```
+composer intall
+
+php bin/console eccube:install  --no-interaction
+php bin/console doctrine:migrations:migrate
+php bin/console cache:clear --no-warmup
+php bin/console server:run
+```
+
+
+
+```
+# Docker起動、ymlファイル指定版
 docker-compose -f docker-compose.yml -f docker-compose.mysql.yml up -d
 
+# 
+# docker-compose -f docker-compose.yml -f docker-compose.mysql.yml build
+
+# 初回 ec cube起動時のみ実行
+# 設定ファイルはenvに書いてるので--no-interactionしてる
 # docker-compose exec -u www-data ec-cube bin/console eccube:install
 docker-compose exec -u www-data ec-cube bin/console eccube:install  --no-interaction
 
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec ec-cube /bin/bash
+
+
+# Down処理
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml down
 ```
+
 
 ローカルec    
 http://localhost:8080/
@@ -38,11 +66,49 @@ http://localhost:4040/
 
 ```
 2回目以降(キャッシュをクリアしたい時)
-docker-compose -f docker-compose.yml -f docker-compose.mysql.yml build
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml build --no-cache
 
-
-docker build . --no-cache
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml -f docker-compose.dev.yml build --no-cache
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml -f docker-compose.dev.yml build --no-cache
 ```
+
+* DB操作
+
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec mysql /bin/bash
+mysql -uroot -p eccubedb
+root
+root
+```
+
+* チェック用コマンド
+
+```
+php bin/console debug:router
+```
+
+
+
+* 既存ページのデザイン変更
+
+
+
+```
+EC-CUBEは以下の順番でテンプレートを読み込みます。
+
+/app/template/default/index.twig
+/src/Eccube/Resource/template/default/index.twig
+
+修正方法
+1. srcフォルダからデフォルトのテンプレートをコピー（/src/Eccube/Resource/template/default/index.twig）
+2. appフォルダにペースト（/app/template/default/index.twig）
+3. index.twigを編集
+```
+
+[qiita](https://qiita.com/kakuta_yu/items/d36f2e746b59f5db7557)
+
+
 
 
 ### 以下は元からのドキュメント
