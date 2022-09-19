@@ -26,11 +26,23 @@ cp .env.dist .env
 composer intall
 
 php bin/console eccube:install  --no-interaction
-php bin/console doctrine:migrations:migrate
+
+# キャッシュクリア：マイグレーションの前にもやった方が良い。
 php bin/console cache:clear --no-warmup
+# マイグレーションファイルの生成
+php bin/console doctrine:migrations:generate
+# マイグレーションファイルを参照してDBに変更を加える
+php bin/console doctrine:migrations:migrate
+# マイグレーションの最新をスキーマ反映
+php bin/console doctrine:schema:update --dump-sql --force
+
+# キャッシュクリア
+php bin/console cache:clear --no-warmup
+# サーバーRUN
 php bin/console server:run
 ```
 
+### Dockerで動かす
 
 
 ```
@@ -74,6 +86,14 @@ docker-compose -f docker-compose.yml -f docker-compose.mysql.yml -f docker-compo
 
 * DB操作
 
+ローカルの場合
+SQLiteの場合
+
+```
+sqlite3 var/eccube.db
+.table
+```
+
 
 ```
 docker-compose -f docker-compose.yml -f docker-compose.mysql.yml exec mysql /bin/bash
@@ -88,6 +108,12 @@ root
 php bin/console debug:router
 ```
 
+
+
+* DB変更周りの修正の参考ページ
+
+
+https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html#fetchassociative
 
 
 * 既存ページのデザイン変更

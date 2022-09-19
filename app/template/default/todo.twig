@@ -1,0 +1,7 @@
+ {% block body %}
+    <ul>
+    {% for todo in todoList %}
+        <li>{{ todo.id }} - {{ todo.todo }}</li>
+    {% endfor %}
+    </ul>
+ {% endblock %}
